@@ -7,6 +7,7 @@
 
 #参考文档
 * [\[BLT\]FQX的Blog](http://www.zhongguotese.net)，本项目赤裸裸抄袭了[这篇文章](http://www.zhongguotese.net/2012/a-bridge-to-home-theater-2.html)和其中的代码
+* [IGVPN](https://www.igssh.com/)的[配置文档](https://www.igssh.com/knowledgebase.php)
 * [@Paveo的blog](http://w3.owind.com)，作为一个Falcop用户，虽然买不起VIG，但是向你致敬
 * [jimmyxu的chnroutes项目](https://github.com/jimmyxu/chnroutes)
 
