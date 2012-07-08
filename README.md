@@ -11,6 +11,16 @@
 * [@Paveo的blog](http://w3.owind.com)，作为一个Falcop用户，虽然买不起VIG，但是向你致敬
 * [jimmyxu的chnroutes项目](https://github.com/jimmyxu/chnroutes)
 
+
+#本项目实现了
+* 开机自动连接Cisco IPSec服务器，效率比常见的OpenVPN确实高很多
+* 抄袭[\[BLT\]FQX的Blog](http://www.zhongguotese.net)中的双路由表设置，家里的下载专用机（192.168.1.33）不走VPN（避免耗费VPN流量和带来封账号风险）
+* 使用[jimmyxu的chnroutes项目](https://github.com/jimmyxu/chnroutes)中的iproute2方案设置所有国内ip不走VPN，几秒搞定几千条
+
+#Todo
+* chnroutes无痛升级
+* 还有什么突然想不起来了
+
 #通过ssh访问路由器
 在Terminal中：
 
@@ -20,7 +30,7 @@
 
 	ssh root@192.168.1.1
 
-就可以登陆路由器了
+就可以登陆路由器了。或者直接通过Telnet访问也可以。
 
 #通过ssh登陆，安装opkg
 	mkdir /jffs/opt
@@ -74,3 +84,4 @@
 告诉路由器在外网链接建立后运行我们vpn脚本。
 
 虽然并不必要，但是**现在重启路由器吧**！享受大功告成的感觉！
+
