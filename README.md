@@ -47,7 +47,7 @@
 	./entware_install.sh
 
 #安装并生成chnroutes脚本
-如果路由器的Flash空间不够，可以跳过本步，直接下载文档中的vpn-up.sh，放到*/opt/etc/vpnc/*目录下。不过如果空间允许，还是建议安装，便于以后升级更新。
+如果路由器的Flash空间不够，可以跳过本步，直接下载文档中的vpn-up.sh，放到 */opt/etc/vpnc/* 目录下。不过如果空间允许，还是建议安装，便于以后升级更新。
 
 	opkg install git
 	opkg install python
@@ -56,16 +56,17 @@
 	git clone https://github.com/jimmyxu/chnroutes.git
 	cd /jffs/vpnc/chnroutes
 	python chnroutes.py
-	……待补充
+	sed -i 's/bash.*$/sh/' vpn-up.sh
+	sed -i 's/\$(.*/\$(nvram get wan_gateway_get)/' vpn-up.sh
 
-最后一步是将vpn-up.sh和vpn-down.sh中的`#!bash`改为`#!sh`，这样就可以直接运行了；另外将vpn-up.sh中获取直连网关的代码改为：`OLDGW=$(nvram get wan_gateway_get) `，我觉得这样更直接一些。
+最后两条sed是将vpn-up.sh中的`#!bash`改为`#!sh`，这样就可以直接运行了；另外将vpn-up.sh中获取直连网关的代码改为：`OLDGW=$(nvram get wan_gateway_get) `，我觉得这样更直接一些。
 
 #安装VPNC
 首先安装vpnc。用ipkg安装似乎存在依赖的问题，另外ipkg里面的vpnc版本要比opkg的老一个revision，所以用opkg安装：
 
 	opkg install vpnc
 	
-但是通过opkg安装vpnc有个问题，就是没有vpnc-script。可以下载本项目中的vpnc-script（从[nslu2的ipkg源](http://ipkg.nslu2-linux.org/feeds/optware/ddwrt/cross/stable/)里面vpnc_0.5.3-1_mipsel.ipk中提取的），将文件中所有的`/etc/resolv.conf`全部替换成`/tmp/resolv.conf.auto`，之后放到*/opt/etc/vpnc/*目录下。请注意为vpnc-script加上可执行权限：
+但是通过opkg安装vpnc有个问题，就是没有vpnc-script。可以下载本项目中的vpnc-script（从[nslu2的ipkg源](http://ipkg.nslu2-linux.org/feeds/optware/ddwrt/cross/stable/)里面vpnc_0.5.3-1_mipsel.ipk中提取的），将文件中所有的`/etc/resolv.conf`全部替换成`/tmp/resolv.conf.auto`，之后放到 */opt/etc/vpnc/* 目录下。请注意为vpnc-script加上可执行权限：
 
 	chmod a+x vpnc-script
 
