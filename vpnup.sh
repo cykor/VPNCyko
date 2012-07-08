@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #Start VPNC
-vpncwatch -c twitter.com -p 80 -i 30 vpnc /opt/etc/vpnc/igssh.conf
+vpncwatch -c twitter.com -p 80 -i 30 vpnc /opt/etc/vpnc/default.conf
 #chnroutes
 /jffs/vpnc/chnroutes/vpn-up.sh
 
