@@ -3,7 +3,7 @@
 #Start VPNC
 vpncwatch -c twitter.com -p 80 -i 30 vpnc /opt/etc/vpnc/igssh.conf
 #chnroutes
-/jffs/vpnc/vpn-up.sh
+/jffs/vpnc/chnroutes/vpn-up.sh
 
 #prepare for novpn
 mkdir /etc/iproute2
