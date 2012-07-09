@@ -20,11 +20,6 @@
 * 抄袭[\[BLT\]FQX的Blog](http://www.zhongguotese.net)中的双路由表设置，家里的下载专用机（192.168.1.33）不走VPN（避免耗费VPN流量和带来封账号风险）
 * 使用[jimmyxu的chnroutes项目](https://github.com/jimmyxu/chnroutes)中的iproute2方案设置所有国内ip不走VPN，几秒搞定几千条
 
-#Todo
-* chnroutes无痛升级
-* 国内站点使用dnsmasq（暂时没有发现这样的必要）
-* 还有什么突然想不起来了
-
 #通过ssh访问路由器
 在Terminal中：
 
