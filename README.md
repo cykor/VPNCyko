@@ -42,7 +42,7 @@
 	./entware_install.sh
 
 ##安装并生成chnroutes脚本
-如果路由器的Flash空间不够，可以跳过本步，直接下载文档中的vpn-up.sh，放到 */opt/etc/vpnc/* 目录下。不过如果空间允许，还是建议安装，便于以后升级更新。
+如果路由器的Flash空间不够，可以跳过本步，直接下载[本项目中的vpn-up.sh](https://github.com/cykor/VPNCyko/blob/master/vpn-up.sh)，放到 */opt/etc/vpnc/* 目录下。不过如果空间允许，还是建议安装，便于以后升级更新。
 
 	opkg install git
 	opkg install python
@@ -61,11 +61,11 @@
 
 	opkg install vpnc
 	
-但是通过opkg安装vpnc有个问题，就是没有vpnc-script。可以下载本项目中的vpnc-script（从[nslu2的ipkg源](http://ipkg.nslu2-linux.org/feeds/optware/ddwrt/cross/stable/)里面vpnc_0.5.3-1_mipsel.ipk中提取的），将文件中所有的`/etc/resolv.conf`全部替换成`/tmp/resolv.conf.auto`，之后放到 */opt/etc/vpnc/* 目录下。请注意为vpnc-script加上可执行权限：
+但是通过opkg安装vpnc有个问题，就是没有vpnc-script。可以下载[本项目中的vpnc-script](https://github.com/cykor/VPNCyko/blob/master/vpnc-script)（从[nslu2的ipkg源](http://ipkg.nslu2-linux.org/feeds/optware/ddwrt/cross/stable/)里面vpnc_0.5.3-1_mipsel.ipk中提取的），将文件中所有的`/etc/resolv.conf`全部替换成`/tmp/resolv.conf.auto`，之后放到 */opt/etc/vpnc/* 目录下。请注意为vpnc-script加上可执行权限：
 
 	chmod a+x vpnc-script
 
-另外，在[@Paveo的blog](http://w3.owind.com/pub/page/4/)中下载修改过的vpncwatch，放到*/opt/sbin/*目录下（也需要可执行权限）。由于@Paveo没有给出修改后的源代码，所以项目中就不提供直接下载了。对于有其他考虑的读者，可以使用[原始开源版本的vpncwatch](https://github.com/dcantrell/vpncwatch)。
+另外，在[@Paveo的blog](http://w3.owind.com/pub/page/4/)中下载修改过的vpncwatch，放到 */opt/sbin/* 目录下（也需要可执行权限）。由于@Paveo没有给出修改后的源代码，所以项目中就不提供直接下载了。对于有其他考虑的读者，可以使用[原始开源版本的vpncwatch](https://github.com/dcantrell/vpncwatch)。
 
 ##配置IPSec VPN账号
 修改/opt/etc/vpnc/default.conf，或新建一个.conf，内容如下：
@@ -77,11 +77,11 @@
 	Xauth password 你的密码
 
 ##最后的准备
+下载本项目中的[vpnup.sh](https://github.com/cykor/VPNCyko/blob/master/vpnup.sh)和[rt_tables](https://github.com/cykor/VPNCyko/blob/master/rt_tables)，放到 */jffs/vpnc/* 目录下。
 在[路由器脚本管理界面](http://192.168.1.1/admin-scripts.asp)的WAN Up中加入
 
 	/jffs/vpnc/vpnup.sh;
 
 告诉路由器在外网链接建立后运行我们vpn脚本。
-
 虽然并不必要，但是**现在重启路由器吧**！享受大功告成的感觉！
 
