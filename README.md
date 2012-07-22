@@ -50,11 +50,9 @@
 	cd /jffs/vpnc
 	git clone https://github.com/jimmyxu/chnroutes.git
 	cd /jffs/vpnc/chnroutes
-	python chnroutes.py
-	sed -i 's/bash.*$/sh/' vpn-up.sh
-	sed -i 's/\$(.*/\$(nvram get wan_gateway_get)/' vpn-up.sh
+	./update.sh
 
-最后两条sed是将vpn-up.sh中的`#!bash`改为`#!sh`，这样就可以直接运行了；另外将vpn-up.sh中获取直连网关的代码改为：`OLDGW=$(nvram get wan_gateway_get) `，我觉得这样更直接一些。
+chnroutes目录中的chnroutes.py来自[jimmyxu的chnroutes项目](https://github.com/jimmyxu/chnroutes)，update.sh的作用是调用chnroutes.py生成vpn-up.sh并将vpn-up.sh中的`#!bash`改为`#!sh`，这样就可以直接运行了；另外将vpn-up.sh中获取直连网关的代码改为：`OLDGW=$(nvram get wan_gateway_get) `，我觉得这样更直接一些。
 
 ##安装VPNC
 首先安装vpnc。用ipkg安装似乎存在依赖的问题，另外ipkg里面的vpnc版本要比opkg的老一个revision，所以用opkg安装：
