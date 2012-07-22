@@ -42,7 +42,7 @@
 	./entware_install.sh
 
 ##安装并生成chnroutes脚本
-如果路由器的Flash空间不够，可以跳过本步，直接下载[本项目中的vpn-up.sh](https://github.com/cykor/VPNCyko/blob/master/vpn-up.sh)，放到 */opt/etc/vpnc/* 目录下。不过如果空间允许，还是建议安装，便于以后升级更新。
+如果路由器的Flash空间不够，可以跳过本步，直接下载[本项目中的vpn-up.sh](https://github.com/cykor/VPNCyko/blob/master/chnroutes/vpn-up.sh)，放到 */opt/etc/vpnc/chnroutes/* 目录下。不过如果空间允许，还是建议安装，便于以后升级更新。
 
 	opkg install git
 	opkg install python
