@@ -5,7 +5,7 @@
 * 路由器：[华硕RT-N16](http://www.asus.com/Networks/Wireless_Routers/RTN16/)，一款性价比较高的路由器，配置不错，特别是拥有32MB Flash，所以也是很多固件开发者的开发用机，可用的ROM非常多
 * 固件：[Tomato by Shibby](http://tomato.groov.pl/)，目前使用的版本是[K26USB-1.28.RT-N5x-MIPSR2-095-AIO](http://tomato.groov.pl/download/K26RT-N/build5x-095-EN/)
 * VPN：[IGVPN](https://www.igssh.com/)的[Pro Bundle](https://www.igssh.com/cart.php)，45GB/月3台并发，支持几乎现在流行的所有设备的所有接入方式，服务器多、速度快、文档详尽，一年360元算是物有所值了。我是用的是香港的Cisco IPSec服务器。
-* 宽带：我家用的是长城宽带……
+* 宽带：我家用的是长城宽带…… 
 
 ##参考文档
 * [\[BLT\]FQX的Blog](http://www.zhongguotese.net)，本项目赤裸裸抄袭了[这篇文章](http://www.zhongguotese.net/2012/a-bridge-to-home-theater-2.html)和其中的代码
