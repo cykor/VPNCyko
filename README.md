@@ -19,6 +19,7 @@
 * 使用[@Paveo修改后的vpncwatch](http://w3.owind.com/pub/page/4/)，每30秒ping一次twitter.com，3次失败后自动重新连接vpnc
 * 抄袭[\[BLT\]FQX的Blog](http://www.zhongguotese.net)中的双路由表设置，家里的下载专用机（192.168.1.33）不走VPN（避免耗费VPN流量和带来封账号风险）
 * 使用[jimmyxu的chnroutes项目](https://github.com/jimmyxu/chnroutes)中的iproute2方案设置所有国内ip不走VPN，几秒搞定几千条
+* 为提高性能，缺省使用OpenDNS解析，国内大站使用114.114.114.114解析，apple.com使用中华电信DNS解析
 
 ##通过ssh访问路由器
 在Terminal中：
@@ -83,3 +84,7 @@ chnroutes目录中的chnroutes.py来自[jimmyxu的chnroutes项目](https://githu
 告诉路由器在外网链接建立后运行我们vpn脚本。
 虽然并不必要，但是**现在重启路由器吧**！享受大功告成的感觉！
 
+##附：dnsmasq的设置
+设置dnsmasq主要目的是提高访问性能，缺省使用OpenDNS解析（我的VPN下Google DNS ping值过高），对于国内大站通过114DNS解析，apple相关域名通过中华电信DNS解析。另外我发现我家api.twitter.com被污染的机率很大，不知道如何处理，所以在dnsmasq中明确指向OpenDNS解析，不过应该没有什么实际意义……还望有经验的朋友赐教。
+具体设置很简单：将本项目中的[dnsmasq](https://github.com/cykor/VPNCyko/blob/master/dnsmasq)中的内容粘贴到[路由器DHCP/DNS管理界面](http://192.168.1.1/advanced-dhcpdns.asp)里面Dnsmasq
+Custom configuration中，勾选Use internal DNS和Prevent DNS-rebind attacks，保存设置即可。
