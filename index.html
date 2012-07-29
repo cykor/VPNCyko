@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>VPNCyko by cykor</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>VPNCyko</h1>
+        <p>基于Tomato的Cisco IPSec VPN科学上网方案。</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/cykor/VPNCyko" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/cykor/VPNCyko/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/cykor/VPNCyko/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <p>本项目记录了我在自己家里的路由器上设置科学上网的全过程，供有类似需求的朋友参考。与之前用了两年的autoddvpn gracemode + OpenVPN方案相比，速度、稳定性都有所提升，而且避免了gracemode要经常添加维护被墙IP的麻烦（之前也做了个脚本自动检测添加路由和dnsmasq，但还是麻烦啊）。</p>
+
+<p>本项目基于以下配置：</p>
+
+<ul>
+<li>路由器：<a href="http://www.asus.com/Networks/Wireless_Routers/RTN16/">华硕RT-N16</a>，一款性价比较高的路由器，配置不错，特别是拥有32MB Flash，所以也是很多固件开发者的开发用机，可用的ROM非常多</li>
+<li>固件：<a href="http://tomato.groov.pl/">Tomato by Shibby</a>，目前使用的版本是<a href="http://tomato.groov.pl/download/K26RT-N/build5x-095-EN/">K26USB-1.28.RT-N5x-MIPSR2-095-AIO</a>
+</li>
+<li>VPN：<a href="https://www.igssh.com/">IGVPN</a>的<a href="https://www.igssh.com/cart.php">Pro Bundle</a>，45GB/月3台并发，支持几乎现在流行的所有设备的所有接入方式，服务器多、速度快、文档详尽，一年360元算是物有所值了。我是用的是香港的Cisco IPSec服务器。</li>
+<li>宽带：我家用的是长城宽带…… </li>
+</ul><h2>参考文档</h2>
+
+<ul>
+<li>
+<a href="http://www.zhongguotese.net">[BLT]FQX的Blog</a>，本项目赤裸裸抄袭了<a href="http://www.zhongguotese.net/2012/a-bridge-to-home-theater-2.html">这篇文章</a>和其中的代码</li>
+<li>
+<a href="https://www.igssh.com/">IGVPN</a>的<a href="https://www.igssh.com/knowledgebase.php">配置文档</a>
+</li>
+<li>
+<a href="http://w3.owind.com">@Paveo的blog</a>，作为一个Falcop用户，虽然买不起VIG，但是向你致敬</li>
+<li><a href="https://github.com/jimmyxu/chnroutes">jimmyxu的chnroutes项目</a></li>
+</ul><h2>本项目实现了</h2>
+
+<ul>
+<li>开机自动连接Cisco IPSec服务器，效率比常见的OpenVPN确实高很多</li>
+<li>使用<a href="http://w3.owind.com/pub/page/4/">@Paveo修改后的vpncwatch</a>，每30秒ping一次twitter.com，3次失败后自动重新连接vpnc</li>
+<li>抄袭<a href="http://www.zhongguotese.net">[BLT]FQX的Blog</a>中的双路由表设置，家里的下载专用机（192.168.1.33）不走VPN（避免耗费VPN流量和带来封账号风险）</li>
+<li>使用<a href="https://github.com/jimmyxu/chnroutes">jimmyxu的chnroutes项目</a>中的iproute2方案设置所有国内ip不走VPN，几秒搞定几千条</li>
+<li>为提高性能，缺省使用OpenDNS解析，国内大站使用114.114.114.114解析，apple.com使用中华电信DNS解析</li>
+</ul><h2>通过ssh访问路由器</h2>
+
+<p>在Terminal中：</p>
+
+<pre><code>ssh-keygen
+cat ~/.ssh/id_rsa.public
+</code></pre>
+
+<p>将id_rsa.public中的内容拷贝到<a href="http://192.168.1.1/admin-access.asp">路由器访问管理界面</a>的Authorized Keys中，之后在Terminal中：</p>
+
+<pre><code>ssh root@192.168.1.1
+</code></pre>
+
+<p>就可以登陆路由器了。或者直接通过Telnet访问也可以。</p>
+
+<h2>通过ssh登陆，安装opkg</h2>
+
+<pre><code>mkdir /jffs/opt
+mount -o bind /jffs/opt /opt 
+</code></pre>
+
+<p>将这上面这一行<code>mount -o bind /jffs/opt /opt</code>加到<a href="http://192.168.1.1/admin-jffs2.asp">路由器JFFS管理界面</a>的Execute When Mounted中，这样路由器每次mount jffs的时候都会自动加载<em>/opt</em></p>
+
+<pre><code>cd /opt
+wget http://wl500g-repo.googlecode.com/svn/ipkg/entware_install.sh
+chmod +x ./entware_install.sh
+./entware_install.sh
+</code></pre>
+
+<h2>安装并生成chnroutes脚本</h2>
+
+<p>如果路由器的Flash空间不够，可以跳过本步，直接下载<a href="https://github.com/cykor/VPNCyko/blob/master/chnroutes/vpn-up.sh">本项目中的vpn-up.sh</a>，放到 <em>/opt/etc/vpnc/chnroutes/</em> 目录下。不过如果空间允许，还是建议安装，便于以后升级更新。</p>
+
+<pre><code>opkg install git
+opkg install python
+mkdir /jffs/vpnc
+cd /jffs/vpnc
+git clone https://github.com/jimmyxu/chnroutes.git
+cd /jffs/vpnc/chnroutes
+./update.sh
+</code></pre>
+
+<p>chnroutes目录中的chnroutes.py来自<a href="https://github.com/jimmyxu/chnroutes">jimmyxu的chnroutes项目</a>，update.sh的作用是调用chnroutes.py生成vpn-up.sh并将vpn-up.sh中的<code>#!bash</code>改为<code>#!sh</code>，这样就可以直接运行了；另外将vpn-up.sh中获取直连网关的代码改为：<code>OLDGW=$(nvram get wan_gateway_get)</code>，我觉得这样更直接一些。</p>
+
+<h2>安装VPNC</h2>
+
+<p>首先安装vpnc。用ipkg安装似乎存在依赖的问题，另外ipkg里面的vpnc版本要比opkg的老一个revision，所以用opkg安装：</p>
+
+<pre><code>opkg install vpnc
+</code></pre>
+
+<p>但是通过opkg安装vpnc有个问题，就是没有vpnc-script。可以下载<a href="https://github.com/cykor/VPNCyko/blob/master/vpnc-script">本项目中的vpnc-script</a>（从<a href="http://ipkg.nslu2-linux.org/feeds/optware/ddwrt/cross/stable/">nslu2的ipkg源</a>里面vpnc_0.5.3-1_mipsel.ipk中提取的），将文件中所有的<code>/etc/resolv.conf</code>全部替换成<code>/tmp/resolv.conf.auto</code>，之后放到 <em>/opt/etc/vpnc/</em> 目录下。请注意为vpnc-script加上可执行权限：</p>
+
+<pre><code>chmod a+x vpnc-script
+</code></pre>
+
+<p>另外，在<a href="http://w3.owind.com/pub/page/4/">@Paveo的blog</a>中下载修改过的vpncwatch，放到 <em>/opt/sbin/</em> 目录下（也需要可执行权限）。由于@Paveo没有给出修改后的源代码，所以项目中就不提供直接下载了。对于有其他考虑的读者，可以使用<a href="https://github.com/dcantrell/vpncwatch">原始开源版本的vpncwatch</a>。</p>
+
+<h2>配置IPSec VPN账号</h2>
+
+<p>修改/opt/etc/vpnc/default.conf，或新建一个.conf，内容如下：</p>
+
+<pre><code>IPSec gateway 服务器地址
+IPSec ID 服务商提供的组ID
+IPSec secret 服务商提供的组密码
+Xauth username 你的用户名
+Xauth password 你的密码
+</code></pre>
+
+<h2>最后的准备</h2>
+
+<p>下载本项目中的<a href="https://github.com/cykor/VPNCyko/blob/master/vpnup.sh">vpnup.sh</a>和<a href="https://github.com/cykor/VPNCyko/blob/master/rt_tables">rt_tables</a>，放到 <em>/jffs/vpnc/</em> 目录下。
+在<a href="http://192.168.1.1/admin-scripts.asp">路由器脚本管理界面</a>的WAN Up中加入</p>
+
+<pre><code>/jffs/vpnc/vpnup.sh;
+</code></pre>
+
+<p>告诉路由器在外网链接建立后运行我们vpn脚本。
+虽然并不必要，但是<strong>现在重启路由器吧</strong>！享受大功告成的感觉！</p>
+
+<h2>附：dnsmasq的设置</h2>
+
+<p>设置dnsmasq主要目的是提高访问性能，缺省使用OpenDNS解析（我的VPN下Google DNS ping值过高），对于国内大站通过114DNS解析，apple相关域名通过中华电信DNS解析。另外我发现我家api.twitter.com被污染的机率很大，不知道如何处理，所以在dnsmasq中明确指向OpenDNS解析，不过应该没有什么实际意义……还望有经验的朋友赐教。</p>
+
+<p>具体设置很简单：将本项目中的<a href="https://github.com/cykor/VPNCyko/blob/master/dnsmasq">dnsmasq</a>中的内容粘贴到<a href="http://192.168.1.1/advanced-dhcpdns.asp">路由器DHCP/DNS管理界面</a>里面Dnsmasq
+Custom configuration中，勾选Use internal DNS和Prevent DNS-rebind attacks，保存设置即可。</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/cykor">cykor</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
